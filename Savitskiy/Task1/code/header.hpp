@@ -71,7 +71,6 @@ namespace SolveFuncs {
 
 std::tuple<double, double, double> answerVariation(
     const std::vector<std::vector<double>>& matrix,
-    const std::vector<LinearEquation>& equations
+    const std::vector<LinearEquation>& equations,
+    const std::vector<double>& solution
 );
-
-
