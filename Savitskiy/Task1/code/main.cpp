@@ -9,7 +9,17 @@ int main(int argc, char* argv[]) {
         std::cout << "Incorrect count of arguments\n";
         end = clock();
     	double secs = (double)(end - start) / CLOCKS_PER_SEC;
-    	std::cout << "Time: " << secs << " seconds\n";
+        printf(
+                "%s : Task = %d Res1 = %e Res2 = %e T1 = %.2f T2 = %.2f S = %d N = %d\n",
+                argv[0],
+                TASK,
+                -1.0,
+                -1.0,
+                secs,
+                0.0,
+                0,
+                0
+            );
         return 0;
     }
     const std::string filenameIn(argc == 5 ? argv[4] : "");
@@ -132,7 +142,8 @@ int main(int argc, char* argv[]) {
             );
         return 0;
     }
-    std::vector<double> solution(n);
+
+    std::vector<double> solution((size_t)n, 0);
     for (size_t i = 0; i < system.size(); ++i) {
         solution[system[i].Variables[i].index] = system[i].FreeCoefficient;
     }
@@ -140,11 +151,15 @@ int main(int argc, char* argv[]) {
         printf("x%zu = %10.3e\n", i+1, solution[i]);
     }
     std::cout << "\nMatrix of system of linear equations:\n";
-    for (size_t i = 0; i < matrix.size(); ++i) {
-        for (size_t j = 0; j < matrix[i].size() - 1; ++j) {
+    for (size_t i = 0; i < (size_t)r; ++i) {
+        for (size_t j = 0; j < (size_t)r ; ++j) {
             printf("%10.3e ", matrix[i][j]);
         }
-        printf("| %10.3e\n", matrix[i][matrix.size() - 1]);
+        if ((size_t)r == matrix.size()) {
+            printf("| %10.3e\n", matrix[i][matrix.size() - 1]);
+        } else {
+            printf("\n");
+        }
     }
 
 
@@ -152,7 +167,7 @@ int main(int argc, char* argv[]) {
 
     end = clock();
     double secs = (double)(end - start) / CLOCKS_PER_SEC;
-    std::tuple<double, double, double> r1r2time = answerVariation(matrix, system);
+    std::tuple<double, double, double> r1r2time = answerVariation(matrix, system, solution);
     printf(
             "%s : Task = %d Res1 = %e Res2 = %e T1 = %.2f T2 = %.2f S = %d N = %d\n",
             argv[0],
