@@ -1,6 +1,7 @@
 #include "header.hpp"
 
 
+
 LinearEquation SolveFuncs::Eliminator::MakeMultiplied(
     LinearEquation equation, 
     const double& multiplier
@@ -53,13 +54,19 @@ bool SolveFuncs::Solver::Solve(std::vector<LinearEquation>& equations) noexcept 
     if (equations.size() == 1) {
         return true;
     }
+    double MatrixNorm = 0.0;
+    for (const auto& i : equations) {
+        for (const auto& j : i.Variables) {
+            MatrixNorm = std::max(std::abs(j.coefficient), MatrixNorm);
+        }
+    }
     size_t index = 0;
     while (index < equations.size()) {
-        std::tuple<bool, size_t> check_pos = equations[index].Normalize_isZeros_position();
+        std::tuple<bool, size_t> check_pos = equations[index].Normalize_isZeros_position(MatrixNorm);
         const bool allZeros = std::get<0>(check_pos);
         const size_t position = std::get<1>(check_pos);
         if (allZeros) {
-            if (std::abs(equations[index].FreeCoefficient) > 10e-10) {
+            if (std::abs(equations[index].FreeCoefficient) > MatrixNorm * 10e-10) {
                 std::cout << "Impossible for solving\n";
                 return false;
             } 
