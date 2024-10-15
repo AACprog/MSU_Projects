@@ -25,7 +25,7 @@ class LinearEquation {
 
         LinearEquation& operator-=(const LinearEquation& le) noexcept;
         void Multiply(const double& multiplier) noexcept;
-        std::tuple<bool, size_t> Normalize_isZeros_position() noexcept;
+        std::tuple<bool, size_t> Normalize_isZeros_position(const double& MatrixNorm) noexcept;
 
         std::vector<Variable> Variables;
         double FreeCoefficient;
@@ -69,7 +69,7 @@ namespace SolveFuncs {
 }
 
 
-std::tuple<double, double, double> answerVariation(
+std::tuple<double, double> answerVariation(
     const std::vector<std::vector<double>>& matrix,
     const std::vector<LinearEquation>& equations,
     const std::vector<double>& solution
