@@ -29,7 +29,7 @@ void LinearEquation::Multiply(const double& multiplier) noexcept {
 }
 
 
-std::tuple<bool, size_t> LinearEquation::Normalize_isZeros_position() noexcept {
+std::tuple<bool, size_t> LinearEquation::Normalize_isZeros_position(const double& MatrixNorm) noexcept {
     double maxAbs = 0;
     size_t pos = 0;
     for (size_t i = 0; i < Variables.size(); ++i) {
@@ -39,7 +39,7 @@ std::tuple<bool, size_t> LinearEquation::Normalize_isZeros_position() noexcept {
         }
     }
 
-    if (maxAbs < 10e-10) {
+    if (maxAbs < MatrixNorm * 10e-10) {
         return std::make_tuple(true, 0);
     }
     double mx = Variables[pos].coefficient;
