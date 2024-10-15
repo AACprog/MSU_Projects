@@ -7,16 +7,14 @@ int main(int argc, char* argv[]) {
 	start = clock();
     if (argc > 5 || argc < 4) {
         std::cout << "Incorrect count of arguments\n";
-        end = clock();
-    	double secs = (double)(end - start) / CLOCKS_PER_SEC;
         printf(
                 "%s : Task = %d Res1 = %e Res2 = %e T1 = %.2f T2 = %.2f S = %d N = %d\n",
                 argv[0],
                 TASK,
                 -1.0,
                 -1.0,
-                secs,
-                0.0,
+                -1.0,
+                -1.0,
                 0,
                 0
             );
@@ -38,16 +36,14 @@ int main(int argc, char* argv[]) {
 
     if (stop) {
         std::cout << "Incorrect arguments\n";
-        end = clock();
-    	double secs = (double)(end - start) / CLOCKS_PER_SEC;
         printf(
                 "%s : Task = %d Res1 = %e Res2 = %e T1 = %.2f T2 = %.2f S = %d N = %d\n",
                 argv[0],
                 TASK,
                 -1.0,
                 -1.0,
-                secs,
-                0.0,
+                -1.0,
+                -1.0,
                 (int)s,
                 (int)n
             );
@@ -55,16 +51,14 @@ int main(int argc, char* argv[]) {
     }
     if (n < r || s < 0 || s > 4 || r < 0 || n < 0) {
         std::cout << "Incorrect data\n";
-        end = clock();
-    	double secs = (double)(end - start) / CLOCKS_PER_SEC;
         printf(
                 "%s : Task = %d Res1 = %e Res2 = %e T1 = %.2f T2 = %.2f S = %d N = %d\n",
                 argv[0],
                 TASK,
                 -1.0,
                 -1.0,
-                secs,
-                0.0,
+                -1.0,
+                -1.0,
                 (int)s,
                 (int)n
             );
@@ -91,7 +85,7 @@ int main(int argc, char* argv[]) {
             }
             matrix[i][n] = 0;
             for (size_t k = 0; k < ((size_t)n + 1) / 2; ++k) {
-            	matrix[i][n] += matrix[i][2 * k + 1];
+            	matrix[i][n] += matrix[i][2 * k];
             }
         }
     }
@@ -117,7 +111,7 @@ int main(int argc, char* argv[]) {
         for (size_t i = 0; i < (size_t)n; ++i) {
             matrix[i].push_back(0);
             for (size_t k = 0; k < ((size_t)n + 1) / 2; ++k) {
-                matrix[i][n] += matrix[i][2 * k + 1];
+                matrix[i][n] += matrix[i][2 * k];
             }
         }
     }
@@ -147,27 +141,25 @@ int main(int argc, char* argv[]) {
     for (size_t i = 0; i < system.size(); ++i) {
         solution[system[i].Variables[i].index] = system[i].FreeCoefficient;
     }
-    for (size_t i = 0; i < (size_t)n; ++i) {
+    for (size_t i = 0; i < (size_t)r; ++i) {
         printf("x%zu = %10.3e\n", i+1, solution[i]);
     }
     std::cout << "\nMatrix of system of linear equations:\n";
     for (size_t i = 0; i < (size_t)r; ++i) {
         for (size_t j = 0; j < (size_t)r ; ++j) {
             printf("%10.3e ", matrix[i][j]);
+            if ((size_t)r == j+1) {
+                printf("| %10.3e\n", matrix[i][matrix.size()]);
+            }
         }
-        if ((size_t)r == matrix.size()) {
-            printf("| %10.3e\n", matrix[i][matrix.size() - 1]);
-        } else {
-            printf("\n");
-        }
+
     }
 
-
-
-
+    clock_t startN = clock();
+    std::tuple<double, double> r1r2time = answerVariation(matrix, system, solution);
+    double timeN = (double)(clock() - startN) / CLOCKS_PER_SEC;
     end = clock();
     double secs = (double)(end - start) / CLOCKS_PER_SEC;
-    std::tuple<double, double, double> r1r2time = answerVariation(matrix, system, solution);
     printf(
             "%s : Task = %d Res1 = %e Res2 = %e T1 = %.2f T2 = %.2f S = %d N = %d\n",
             argv[0],
@@ -175,7 +167,7 @@ int main(int argc, char* argv[]) {
             std::get<0>(r1r2time),
             std::get<1>(r1r2time),
             secs,
-            std::get<2>(r1r2time),
+            timeN,
             (int)s,
             (int)n
         );
