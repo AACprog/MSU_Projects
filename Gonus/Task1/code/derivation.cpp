@@ -6,14 +6,6 @@ std::tuple<double, double> answerDerivation(
     const std::vector<std::vector<double>>& inversedMatrix
 ) noexcept {
     if (startMatrix.size() > 11000) return std::make_tuple(0.0, 0.0);
-    std::vector<std::vector<double>> E = std::vector<std::vector<double>>(
-        startMatrix.size(), 
-        std::vector<double>(
-            startMatrix.size(), 
-            0.0
-        )
-    );
-    for (size_t i = 0; i < E.size(); ++i) E[i][i] = 1.0;
     std::vector<std::vector<double>> result1 = std::vector<std::vector<double>>(
         startMatrix.size(), 
         std::vector<double>(
