@@ -21,7 +21,7 @@ void FileWork::matrixRead(
 
 std::vector<double> FileWork::Parser::parseRow(const std::string& row) {
     std::vector<double> parsed;
-    std::regex r(R"(-?\d+(\.\d+)?)");
+    std::regex r(R"(-?\d+(\.\d+)?([eE]-?\d+(\.\d+)?)?)");
     auto rowBegin = std::sregex_iterator(row.begin(), row.end(), r);
     auto rowEnd = std::sregex_iterator();
     for (std::sregex_iterator i = rowBegin; i != rowEnd; i++) {
