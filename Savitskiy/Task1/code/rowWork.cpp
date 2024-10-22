@@ -66,7 +66,7 @@ bool SolveFuncs::Solver::Solve(std::vector<LinearEquation>& equations) noexcept 
         const bool allZeros = std::get<0>(check_pos);
         const size_t position = std::get<1>(check_pos);
         if (allZeros) {
-            if (std::abs(equations[index].FreeCoefficient) > MatrixNorm * 10e-10) {
+            if (std::abs(equations[index].FreeCoefficient) > MatrixNorm * 10e-16) {
                 std::cout << "Impossible for solving\n";
                 return false;
             } 
