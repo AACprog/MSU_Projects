@@ -39,7 +39,7 @@ std::tuple<bool, size_t> LinearEquation::Normalize_isZeros_position(const double
         }
     }
 
-    if (maxAbs < MatrixNorm * 10e-10) {
+    if (maxAbs < MatrixNorm * 10e-16) {
         return std::make_tuple(true, 0);
     }
     double mx = Variables[pos].coefficient;
