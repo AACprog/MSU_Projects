@@ -66,7 +66,10 @@ bool SolveFuncs::Solver::Solve(
         }
         std::cout << "\n";
         print();
-        std::swap(system[index], system[position]);
+        //std::swap(system[index], system[position]);
+        for (auto& row : system) {
+             std::swap(row.Variables[index], row.Variables[position]);
+        }
         index++;
     }
     return true;
