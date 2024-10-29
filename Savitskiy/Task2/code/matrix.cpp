@@ -24,7 +24,7 @@ double Matrix::HelpFuncs::f4(const size_t& i, const size_t& j) noexcept {
 void Matrix::Build::MatrixRead(std::vector<std::vector<double>>& matrix, const std::string& filename) noexcept {
     auto parse = [](const std::string& row)->std::vector<double> {
         std::vector<double> parsed;
-        std::regex r(R"(-?\d+(\.\d+)?([eE]-?\d+(\.\d+)?)?)");
+        std::regex r(R"(-?\d+(\.\d+)?([eE][+-]?\d+(\.\d+)?)?)");
         auto rowBegin = std::sregex_iterator(row.begin(), row.end(), r);
         auto rowEnd = std::sregex_iterator();
         for (std::sregex_iterator i = rowBegin; i != rowEnd; i++) {
