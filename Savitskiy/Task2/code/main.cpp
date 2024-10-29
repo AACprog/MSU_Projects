@@ -57,8 +57,8 @@ int main(int argc, char* argv[]) {
     for (size_t i = 0; i < matrix.size(); ++i) system.push_back(LinearEquation(matrix[i]));
     std::vector<std::thread> threads(p);
 
-
-    if (!SolveFuncs::Solver::Solve(system, Matrix::MatrixNorm(matrix), p)) {
+    auto norm = Matrix::MatrixNorm(matrix);
+    if (!SolveFuncs::Solver::Solve(system, norm, p)) {
         std::cout << "No solution\n";
         end = clock();
     	double secs = (double)(end - start) / CLOCKS_PER_SEC;
@@ -68,8 +68,10 @@ int main(int argc, char* argv[]) {
         );
         return 0;
     }
-
-    std::vector<double> solution((size_t)n, 0);
+    if (system.size() < matrix.size()) {
+        std::cout << "Infinitely many solutions.\nPrticular solution:\n";
+    }
+    std::vector<double> solution((size_t)n, 0.0);
     SolveFuncs::Solution::GetAnswer(system, solution);
     for (size_t i = 0; i < (size_t)r; ++i) {
         printf("x%zu = %10.3e\n", i+1, solution[i]);
@@ -78,10 +80,11 @@ int main(int argc, char* argv[]) {
     for (size_t i = 0; i < (size_t)r; ++i) {
         for (size_t j = 0; j < (size_t)r ; ++j) {
             printf("%10.3e ", matrix[i][j]);
-            if ((size_t)r == j+1) {
-                printf("| %10.3e\n", matrix[i][matrix.size()]);
+            if ((size_t)j == (size_t)(n - 1)) {
+                printf("| %10.3e", matrix[i][matrix.size()]);
             }
         }
+        printf("\n");
     }
 
     clock_t startN = clock();
@@ -97,5 +100,3 @@ int main(int argc, char* argv[]) {
     return 0;
 
 }
-
-
