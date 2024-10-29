@@ -11,18 +11,11 @@ LinearEquation::LinearEquation(const std::vector<double>& row) noexcept {
 
 
 LinearEquation& LinearEquation::operator-=(const LinearEquation& le) noexcept {
-    for (size_t i = 0; i < le.Variables.size(); ++i) 
+    for (size_t i = 0; i < le.Variables.size(); ++i) {
         Variables[i].coefficient -= le.Variables[i].coefficient;
+    }
     FreeCoefficient -= le.FreeCoefficient;
     return *this;
-}
-
-
-LinearEquation LinearEquation::operator*(const double& multiplier) const noexcept {
-    LinearEquation le(*this);
-    for (size_t i = 0; i < le.Variables.size(); ++i) le.Variables[i].coefficient *= multiplier;
-    le.FreeCoefficient *= multiplier;
-    return le;
 }
 
 
@@ -38,7 +31,9 @@ std::tuple<bool, size_t> LinearEquation::Normalize_isZeros_position(const double
 
     if (maxAbs < MatrixNorm * 10e-16) return std::make_tuple(true, 0);
     double mx = Variables[pos].coefficient;
-    for (size_t i = 0; i < Variables.size(); ++i) Variables[i].coefficient /= mx;
+    for (size_t i = 0; i < Variables.size(); ++i) {
+        Variables[i].coefficient /= mx;
+    }
     FreeCoefficient /= mx;
     return std::make_tuple(false, pos);
 }
