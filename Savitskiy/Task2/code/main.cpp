@@ -55,7 +55,6 @@ int main(int argc, char* argv[]) {
 
     std::vector<LinearEquation> system;
     for (size_t i = 0; i < matrix.size(); ++i) system.push_back(LinearEquation(matrix[i]));
-    std::vector<std::thread> threads(p);
 
     auto norm = Matrix::MatrixNorm(matrix);
     if (!SolveFuncs::Solver::Solve(system, norm, p)) {
