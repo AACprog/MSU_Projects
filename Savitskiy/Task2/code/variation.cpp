@@ -7,9 +7,9 @@ std::tuple<double, double> Variation::GetVariation(
     const int& p
 ) noexcept {
     std::vector<double> AxMinusB(matrix.size());
-    const auto substituteForRow = [&](const size_t& index){
+    auto substituteForRow = [&](const size_t& index){
         double out = 0.0;
-        for (size_t i = 0; i < matrix[index].size(); ++i) {
+        for (size_t i = 0; i < solution.size(); ++i) {
             out += solution[i] * matrix[index][i];
         }
         AxMinusB[index] = out - matrix[index][matrix[index].size() - 1];
@@ -22,7 +22,7 @@ std::tuple<double, double> Variation::GetVariation(
         for (auto& thr : th) thr.join();
     }
     std::vector<std::thread> lastThreading;
-    for (size_t rowNumber = matrix.size() - matrix.size() % (size_t)p + 1; rowNumber < matrix.size(); ++rowNumber) {
+    for (size_t rowNumber = matrix.size() - (matrix.size() % (size_t)p) + 1; rowNumber < matrix.size(); ++rowNumber) {
         lastThreading.emplace_back(std::thread(substituteForRow, rowNumber));
     }
     for (auto& thr : lastThreading) thr.join();
@@ -35,5 +35,4 @@ std::tuple<double, double> Variation::GetVariation(
         r2down += (double)((ind + 1) % 2);
     }
     return std::make_tuple(axbNorm / bNorm, r2up / r2down);
-
 }
