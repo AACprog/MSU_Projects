@@ -28,7 +28,6 @@ class LinearEquation {
 
         LinearEquation& operator=(const LinearEquation&) = default;
         LinearEquation& operator-=(const LinearEquation&) noexcept;
-        LinearEquation operator*(const double&) const noexcept;
 
         std::tuple<bool, size_t> Normalize_isZeros_position(const double&) noexcept;
 
