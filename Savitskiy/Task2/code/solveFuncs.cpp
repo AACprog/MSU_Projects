@@ -7,24 +7,25 @@ bool SolveFuncs::Solver::Solve(
     const int& p
 ) noexcept {
     if (system.size() < 2) return true;
-    auto print = [&](void)->void{
-        for (const auto& row : system) {
-            for (const auto& var :row.Variables) {
-                printf("%10.3e ", var.coefficient);
-            }
-            printf("| %10.3e\n", row.FreeCoefficient);
+    
+    auto makeMultiplied = [](const LinearEquation& le, const double& multiplier)->LinearEquation{
+        LinearEquation out(le);
+        for (size_t i = 0; i < out.Variables.size(); ++i) {
+            out.Variables[i].coefficient *= multiplier;
         }
+        out.FreeCoefficient *= multiplier;
+        return out;
     };
     auto eliminator = [&](
         const size_t& indexOfEquation,
         const size_t& indexOfVariable
     )->void {
-        for (size_t i = 0; i < indexOfEquation / p; i += p) {
+        for (size_t i = 0; i < indexOfEquation; i += p) {
             std::vector<std::thread> thr;
             for (size_t j = 0; j < (size_t)p && i + j < indexOfEquation; ++j) {
                 thr.emplace_back(
-                    [&system, indexOfEquation, indexOfVariable, i, j]() {
-                        system[i + j] -= system[indexOfEquation] * system[i + j].Variables[indexOfVariable].coefficient;
+                    [&system, indexOfEquation, indexOfVariable, i, j, &makeMultiplied]() {
+                        system[i + j] -= makeMultiplied(system[indexOfEquation], system[i + j].Variables[indexOfVariable].coefficient);
                     }
                 );
             }
@@ -34,13 +35,23 @@ bool SolveFuncs::Solver::Solve(
             std::vector<std::thread> thr;
             for (size_t j = 0; j < (size_t)p && i + j < system.size(); ++j) {
                 thr.emplace_back(
-                    [&system, indexOfEquation, indexOfVariable, i, j]() {
-                        system[i + j] -= system[indexOfEquation] * system[i + j].Variables[indexOfVariable].coefficient;
+                    [&system, indexOfEquation, indexOfVariable, i, j, &makeMultiplied]() {
+                        system[i + j] -= makeMultiplied(system[indexOfEquation], system[i + j].Variables[indexOfVariable].coefficient);
                     }
                 );
             }
             for (auto& th : thr) th.join();
         } 
+    };
+    auto swapper = [&system](
+        const size_t& index, 
+        const size_t& position
+    )->void{
+        for (size_t i = 0; i < system.size(); ++i) {
+            Variable v_tmp = system[i].Variables[index];
+            system[i].Variables[index] = system[i].Variables[position];
+            system[i].Variables[position] = v_tmp;
+        }
     };
 
     size_t index = 0;
@@ -60,16 +71,10 @@ bool SolveFuncs::Solver::Solve(
             index,
             position
         );
-        std::cout << "Indexes:\n";
-        for (const auto& ind : system[0].Variables) {
-            std::cout << ind.index << " ";
-        }
-        std::cout << "\n";
-        print();
-        //std::swap(system[index], system[position]);
-        for (auto& row : system) {
-             std::swap(row.Variables[index], row.Variables[position]);
-        }
+        swapper(
+            index, 
+            position
+        );
         index++;
     }
     return true;
