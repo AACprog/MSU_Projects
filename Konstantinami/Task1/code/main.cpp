@@ -1,7 +1,5 @@
 #include "header.hpp"
 
-
-#include "header.hpp"
 #define TASK 9
 
 
