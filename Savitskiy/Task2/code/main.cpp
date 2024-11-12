@@ -85,6 +85,11 @@ int main(int argc, char* argv[]) {
         }
         printf("\n");
     }
+    std::cout << "Order: {";
+    for (size_t i = 0; i < (size_t)r; ++i) {
+        std::cout << system[0].Variables[i].index << " ";
+    }
+    std::cout << "}\n";
     std::cout << "Finished matrix:\n";
     for (size_t i = 0; i < (size_t)r; ++i) {
         for (size_t j = 0; j < (size_t)r ; ++j) {
