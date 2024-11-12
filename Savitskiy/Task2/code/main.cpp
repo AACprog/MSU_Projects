@@ -85,6 +85,21 @@ int main(int argc, char* argv[]) {
         }
         printf("\n");
     }
+    std::cout << "Finished matrix:\n";
+    for (size_t i = 0; i < (size_t)r; ++i) {
+        for (size_t j = 0; j < (size_t)r ; ++j) {
+            if (system.size() < i + 1) {
+                printf("%10.3e ", 0.0);
+            } else {
+                printf("%10.3e ", system[i].VariableCoefficients[j]);
+            }
+        }
+        if (r == n) {
+            printf("| %10.3e\n", system[i].FreeCoefficient);
+        } else {
+            printf("\n");
+        }
+    }
 
     clock_t startN = clock();
     const auto r1r2 = Variation::GetVariation(matrix, solution, p);
