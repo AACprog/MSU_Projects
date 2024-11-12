@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
             if (system.size() < i + 1) {
                 printf("%10.3e ", 0.0);
             } else {
-                printf("%10.3e ", system[i].VariableCoefficients[j]);
+                printf("%10.3e ", system[i].Variables[j]);
             }
         }
         if (r == n) {
