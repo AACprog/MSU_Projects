@@ -12,3 +12,5 @@ It located in Task*/build
 # Some additional info
 In manual I used regex from bash(Task* for example)
 Also you can check SomeBullshit directory, where you can find hashmaps on clean c or something else. It's my experimental programs. You can use it in your projects, if you want. 
+# Important info
+I don't use windows, and I don't adapt programs for this os. All my programs are made for Linux and can work on macos. Btw I use Fedora 41))))))))
