@@ -1,5 +1,5 @@
 #include "header.hpp"
-
+#include <math.h>
 #define TASK 9
 
 
@@ -77,15 +77,26 @@ int main(int argc, char* argv[]) {
 	    }
         printf("\n");
     }
+    auto norm3 = [&answer]()->std::tuple<double, double, double> {
+        double n1 = 0.0, n2 = 0.0, n3 = 0.0;
+        for (const auto& i : answer) {
+            n1 += std::fabs(i);
+            n2 +=  std::pow(i, 2);
+            n3 = std::max(n3, std::fabs(i));
+        }
+        return std::make_tuple(n1, sqrt(n2), n3);
+    };
     clock_t startN = clock();
     auto r1r2 = answerVariation(matrix, system,  answer);
     double timeN = (double)(clock() - startN) / CLOCKS_PER_SEC;
     end = clock();
     double secs = (double)(end - start) / CLOCKS_PER_SEC;
     printf(
-            "%s : Task = %d Res1 = %e Res2 = %e T1 = %.2f T2 = %.2f S = %d N = %d\n",
-            argv[0], TASK, std::get<0>(r1r2), std::get<1>(r1r2), secs, timeN, (int)s, (int)n
-        );
+        "%s : Task = %d Res1 = %e Res2 = %e T1 = %.2f T2 = %.2f S = %d N = %d\n",
+        argv[0], TASK, std::get<0>(r1r2), std::get<1>(r1r2), secs, timeN, (int)s, (int)n
+    );
+    auto norms = norm3();
+    printf("Norm1 = %lf Norm2 = %lf NormInf = %lf\n", std::get<0>(norms), std::get<1>(norms), std::get<2>(norms));
     return 0;
 
 }
