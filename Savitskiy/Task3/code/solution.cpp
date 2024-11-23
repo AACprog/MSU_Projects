@@ -69,6 +69,9 @@ void Solve::JacobianRotation(
     size_t n = matrix.size();
     for (size_t i = 0; i < iterCnt; ++i) {
         ++iterations;
+        if ((iterations + 1) / 100 * 100 == iterations + 1) {
+            printf("iteration[%d]\n", (int)iterations + 1);
+        }
         std::tuple<size_t, size_t> RC = FindElemenForZeroing(matrix);
         size_t row = std::get<0>(RC), col = std::get<1>(RC);
         double val = matrix[row][col];
@@ -82,7 +85,6 @@ void Solve::JacobianRotation(
         } else {
             phi = 0.5 * std::atan(-(2 * matrix[row][col]) / (matrix[row][row] - matrix[col][col]));
         }
-        //printf("[%zu][%zu]\n", row, col);
         MakeRotationMatrix(rotationMatrix, row, col, phi);
         Rotate(matrix, rotationMatrix);
     }
