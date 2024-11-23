@@ -1,5 +1,5 @@
 #include "header.hpp"
-#define ITERATION_COUNT 100000
+#define ITERATION_COUNT 10000
 
 int main(int argc, char* argv[]) {
     const auto incorrectArgs = [&argv](){
