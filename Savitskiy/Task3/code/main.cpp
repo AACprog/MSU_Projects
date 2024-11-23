@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
     auto r1r2 = Variation(matrix, lambdas);
     printf (
         "%s : Residual1 = %e Residual2 = %e Iterations = %d Iterations1 = %d Elapsed1 = %.2f Elapsed2 = %.2f\n",
-        argv[0], std::get<0>(r1r2), std::get<1>(r1r2), iters, iters / (size_t)n, 
+        argv[0], std::get<0>(r1r2), std::get<1>(r1r2), (int)iters, (int)iters / n, 
         (double)(end1 - start1) / CLOCKS_PER_SEC, (double)(end2 - start2) / CLOCKS_PER_SEC
     );
     return 0;
