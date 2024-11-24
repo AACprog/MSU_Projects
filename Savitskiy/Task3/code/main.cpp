@@ -1,5 +1,5 @@
 #include "header.hpp"
-#define ITERATION_COUNT 10000
+#define ITERATION_COUNT 1000
 
 int main(int argc, char* argv[]) {
     const auto incorrectArgs = [&argv](){
@@ -70,5 +70,4 @@ int main(int argc, char* argv[]) {
         (double)(end1 - start1) / CLOCKS_PER_SEC, (double)(end2 - start2) / CLOCKS_PER_SEC
     );
     return 0;
-
 }
