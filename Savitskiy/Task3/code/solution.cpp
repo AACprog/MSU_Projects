@@ -40,22 +40,21 @@ void Solve::MakeRotationMatrix(std::vector<std::vector<double>>& matrix, const s
 }
 
 
-void Solve::Rotate(std::vector<std::vector<double>>& matrix, const std::vector<std::vector<double>>& rotationMatrix) noexcept {
-    std::vector<std::vector<double>> res(matrix.size(), std::vector<double>(matrix.size(), 0.0));
-    for (size_t i = 0; i < matrix.size(); ++i) {
-        for (size_t j = 0; j < matrix.size(); ++j) {
-            for (size_t r = 0; r < matrix.size(); ++r) {
-                res[i][j] += rotationMatrix[i][r] * matrix[r][j];
-            }
-        }
+void Solve::Rotate(
+    std::vector<std::vector<double>>& matrix, 
+    const std::vector<std::vector<double>>& rotationMatrix, 
+    const size_t& p, 
+    const size_t& q
+) noexcept {
+    std::vector<std::vector<double>> res = matrix; 
+    for (size_t j = 0; j < matrix.size(); ++j) {
+        res[p][j] = rotationMatrix[p][p] * matrix[p][j] + rotationMatrix[q][p] * matrix[q][j];
+        res[q][j] = rotationMatrix[p][q] * matrix[p][j] + rotationMatrix[q][q] * matrix[q][j];
     }
+    matrix = res;
     for (size_t i = 0; i < matrix.size(); ++i) {
-        for (size_t j = 0; j < matrix.size(); ++j) {
-            matrix[i][j] = 0.0;
-            for (size_t r = 0; r < matrix.size(); ++r) {
-                matrix[i][j] += res[i][r] * rotationMatrix[j][r];
-            }
-        }
+        matrix[i][p] = res[i][p] * rotationMatrix[p][p] + res[i][q] * rotationMatrix[q][p];
+        matrix[i][q] = res[i][p] * rotationMatrix[p][q] + res[i][q] * rotationMatrix[q][q];
     }
 }
 
@@ -86,7 +85,7 @@ void Solve::JacobianRotation(
             phi = 0.5 * std::atan(-(2 * matrix[row][col]) / (matrix[row][row] - matrix[col][col]));
         }
         MakeRotationMatrix(rotationMatrix, row, col, phi);
-        Rotate(matrix, rotationMatrix);
+        Rotate(matrix, rotationMatrix, row, col);
     }
 }
 
