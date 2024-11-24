@@ -1,14 +1,14 @@
 #include "header.hpp"
 
 
-std::tuple<size_t, size_t> Solve::FindElemenForZeroing(const std::vector<std::vector<double>>& matrix) noexcept {
-    std::vector<double> colSums(matrix.size(), 0.0);
+std::tuple<size_t, size_t> Solve::FindElemenForZeroing(const std::vector<std::vector<double>>& matrix, const std::vector<double>& colSums) noexcept {
+    /*std::vector<double> colSums(matrix.size(), 0.0);
     for (size_t i = 0; i < matrix.size(); ++i) {
         for (size_t j = 0; j < matrix.size(); ++j) {
             colSums[i] += matrix[j][i] * matrix[j][i];
         }
         colSums[i] -= matrix[i][i] * matrix[i][i];
-    }
+    }*/
     size_t col = 0;
     double maxSum = colSums[0];
     for (size_t i = 1; i < colSums.size(); ++i) {
@@ -47,15 +47,6 @@ void Solve::Rotate(
     const size_t& q
 ) noexcept {
     std::vector<std::vector<double>> res = matrix; 
-    /*for (size_t j = 0; j < matrix.size(); ++j) {
-        res[p][j] = rotationMatrix[p][p] * matrix[p][j] + rotationMatrix[q][p] * matrix[q][j];
-        res[q][j] = rotationMatrix[p][q] * matrix[p][j] + rotationMatrix[q][q] * matrix[q][j];
-    }
-    matrix = res;
-    for (size_t i = 0; i < matrix.size(); ++i) {
-        matrix[i][p] = res[i][p] * rotationMatrix[p][p] + res[i][q] * rotationMatrix[q][p];
-        matrix[i][q] = res[i][p] * rotationMatrix[p][q] + res[i][q] * rotationMatrix[q][q];
-    }*/ //if T^t * A * T 
     for (size_t j = 0; j < matrix.size(); ++j) {
         res[p][j] = rotationMatrix[p][p] * matrix[p][j] + rotationMatrix[p][q] * matrix[q][j];
         res[q][j] = rotationMatrix[q][p] * matrix[p][j] + rotationMatrix[q][q] * matrix[q][j];
@@ -64,7 +55,7 @@ void Solve::Rotate(
     for (size_t i = 0; i < matrix.size(); ++i) {
         matrix[i][p] = res[i][p] * rotationMatrix[p][p] + res[i][q] * rotationMatrix[p][q];
         matrix[i][q] = res[i][p] * rotationMatrix[q][p] + res[i][q] * rotationMatrix[q][q];
-    } //if T * A * T^t
+    }
 }
 
 
@@ -74,13 +65,20 @@ void Solve::JacobianRotation(
     const size_t& iterCnt,
     size_t& iterations
 ) noexcept {
+    std::vector<double> colSums(matrix.size(), 0.0);
+    for (size_t i = 0; i < matrix.size(); ++i) {
+        for (size_t j = 0; j < matrix.size(); ++j) {
+            colSums[i] += matrix[j][i] * matrix[j][i];
+        }
+        colSums[i] -= matrix[i][i] * matrix[i][i];
+    }
     size_t n = matrix.size();
     for (size_t i = 0; i < iterCnt; ++i) {
         ++iterations;
         if ((iterations + 1) / 100 * 100 == iterations + 1) {
             printf("iteration[%d]\n", (int)iterations + 1);
         }
-        std::tuple<size_t, size_t> RC = FindElemenForZeroing(matrix);
+        std::tuple<size_t, size_t> RC = FindElemenForZeroing(matrix, colSums);
         size_t row = std::get<0>(RC), col = std::get<1>(RC);
         double val = matrix[row][col];
         if (std::abs(val) < eps || row == col) {
@@ -95,6 +93,13 @@ void Solve::JacobianRotation(
         }
         MakeRotationMatrix(rotationMatrix, row, col, phi);
         Rotate(matrix, rotationMatrix, row, col);
+        colSums[row] = 0.0;
+        colSums[col] = 0.0;
+        for (size_t j = 0; j < n; ++j) {
+            colSums[row] += matrix[j][row];
+            colSums[col] += matrix[j][col];
+
+        }
     }
 }
 
