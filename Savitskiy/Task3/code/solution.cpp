@@ -47,7 +47,7 @@ void Solve::Rotate(
     const size_t& q
 ) noexcept {
     std::vector<std::vector<double>> res = matrix; 
-    for (size_t j = 0; j < matrix.size(); ++j) {
+    /*for (size_t j = 0; j < matrix.size(); ++j) {
         res[p][j] = rotationMatrix[p][p] * matrix[p][j] + rotationMatrix[q][p] * matrix[q][j];
         res[q][j] = rotationMatrix[p][q] * matrix[p][j] + rotationMatrix[q][q] * matrix[q][j];
     }
@@ -55,7 +55,16 @@ void Solve::Rotate(
     for (size_t i = 0; i < matrix.size(); ++i) {
         matrix[i][p] = res[i][p] * rotationMatrix[p][p] + res[i][q] * rotationMatrix[q][p];
         matrix[i][q] = res[i][p] * rotationMatrix[p][q] + res[i][q] * rotationMatrix[q][q];
+    }*/ //if T^t * A * T 
+    for (size_t j = 0; j < matrix.size(); ++j) {
+        res[p][j] = rotationMatrix[p][p] * matrix[p][j] + rotationMatrix[p][q] * matrix[q][j];
+        res[q][j] = rotationMatrix[q][p] * matrix[p][j] + rotationMatrix[q][q] * matrix[q][j];
     }
+    matrix = res;
+    for (size_t i = 0; i < matrix.size(); ++i) {
+        matrix[i][p] = res[i][p] * rotationMatrix[p][p] + res[i][q] * rotationMatrix[p][q];
+        matrix[i][q] = res[i][p] * rotationMatrix[q][p] + res[i][q] * rotationMatrix[q][q];
+    } //if T * A * T^t
 }
 
 
