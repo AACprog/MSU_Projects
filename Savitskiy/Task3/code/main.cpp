@@ -1,5 +1,5 @@
 #include "header.hpp"
-#define ITERATION_COUNT 1000
+#define ITERATION_COUNT 10000
 
 int main(int argc, char* argv[]) {
     const auto incorrectArgs = [&argv](){
@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
     clock_t end2 = clock();
     std::cout << "Eigenvalues:\n";
     for (size_t i = 0; i < (size_t)m; ++i) {
-        printf("l%zu =%10.3e\n", i, lambdas[i]);
+        printf("l%zu =%10.3e\n", i + 1, lambdas[i]);
     }
 
     auto r1r2 = Variation(matrix, lambdas);
