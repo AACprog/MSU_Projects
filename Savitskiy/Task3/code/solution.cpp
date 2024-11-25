@@ -2,13 +2,6 @@
 
 
 std::tuple<size_t, size_t> Solve::FindElemenForZeroing(const std::vector<std::vector<double>>& matrix, const std::vector<double>& colSums) noexcept {
-    /*std::vector<double> colSums(matrix.size(), 0.0);
-    for (size_t i = 0; i < matrix.size(); ++i) {
-        for (size_t j = 0; j < matrix.size(); ++j) {
-            colSums[i] += matrix[j][i] * matrix[j][i];
-        }
-        colSums[i] -= matrix[i][i] * matrix[i][i];
-    }*/
     size_t col = 0;
     double maxSum = colSums[0];
     for (size_t i = 1; i < colSums.size(); ++i) {
@@ -46,7 +39,7 @@ void Solve::Rotate(
     const size_t& p, 
     const size_t& q
 ) noexcept {
-    std::vector<std::vector<double>> res = matrix; 
+    std::vector<std::vector<double>> res = matrix;
     for (size_t j = 0; j < matrix.size(); ++j) {
         res[p][j] = rotationMatrix[p][p] * matrix[p][j] + rotationMatrix[p][q] * matrix[q][j];
         res[q][j] = rotationMatrix[q][p] * matrix[p][j] + rotationMatrix[q][q] * matrix[q][j];
@@ -96,16 +89,17 @@ void Solve::JacobianRotation(
         colSums[row] = 0.0;
         colSums[col] = 0.0;
         for (size_t j = 0; j < n; ++j) {
-            colSums[row] += matrix[j][row];
-            colSums[col] += matrix[j][col];
-
+            colSums[row] += matrix[j][row] * matrix[j][row];
+            colSums[col] += matrix[j][col] * matrix[j][col];
         }
+        colSums[row] -= matrix[row][row] * matrix[row][row];
+        colSums[col] -= matrix[col][col] * matrix[col][col];
     }
 }
 
 
 std::tuple<double, double> Variation(const std::vector<std::vector<double>>& matrix, const std::vector<double>& lambdas) noexcept {
-    double r1up = 0.0, r2up1 = 0.0, r2up2;
+    double r1up = 0.0, r2up1 = 0.0, r2up2 = 0.0;
     for (size_t i = 0; i < matrix.size(); ++i) {
         r1up += lambdas[i] - matrix[i][i];
         r2up2 += lambdas[i] * lambdas[i];
