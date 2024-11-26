@@ -44,7 +44,7 @@ void Solve::Rotate(
         res[p][j] = rotationMatrix[p][p] * matrix[p][j] + rotationMatrix[p][q] * matrix[q][j];
         res[q][j] = rotationMatrix[q][p] * matrix[p][j] + rotationMatrix[q][q] * matrix[q][j];
     }
-    matrix = res;
+    //matrix = res;
     for (size_t i = 0; i < matrix.size(); ++i) {
         matrix[i][p] = res[i][p] * rotationMatrix[p][p] + res[i][q] * rotationMatrix[p][q];
         matrix[i][q] = res[i][p] * rotationMatrix[q][p] + res[i][q] * rotationMatrix[q][q];
@@ -114,6 +114,9 @@ std::tuple<double, double> Variation(const std::vector<std::vector<double>>& mat
             tmp += std::abs(elem);
         }
         norm = std::max(tmp, norm);
+    }
+    if (norm < 1e-100) {
+        return std::make_tuple(0.0, 0.0);
     }
     return std::make_tuple(std::abs(r1up) / norm, std::abs(std::sqrt(r2up1) - std::sqrt(r2up2)) / norm);
 }
