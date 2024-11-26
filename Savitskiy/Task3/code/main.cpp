@@ -36,6 +36,14 @@ int main(int argc, char* argv[]) {
     }
     auto matrixCopy = matrix;
     Solve::JacobianRotation(matrixCopy, eps, ITERATION_COUNT, iters);
+    std::vector<double> lambdas(n);
+    for (size_t i = 0; i < (size_t)n; ++i) {
+        lambdas[i] = matrixCopy[i][i];
+    }
+    clock_t end1 = clock();
+    start2 = clock();
+    auto r1r2 = Variation(matrix, lambdas);
+    clock_t end2 = clock();
     std::cout << "Matrix:\n";
     for (size_t i = 0; i < (size_t)m; ++i) {
         for (size_t j = 0; j < (size_t)m; ++j) {
@@ -43,8 +51,6 @@ int main(int argc, char* argv[]) {
         }
 	printf("\n");
     }
-    clock_t end1 = clock();
-
     std::cout << "Reworked matrix:\n";
     for (size_t i = 0; i < (size_t)m; ++i) {
         for (size_t j = 0; j < (size_t)m; ++j) {
@@ -52,18 +58,10 @@ int main(int argc, char* argv[]) {
         }
 	printf("\n");
     }
-    start2 = clock();
-    std::vector<double> lambdas(n);
-    for (size_t i = 0; i < (size_t)n; ++i) {
-        lambdas[i] = matrixCopy[i][i];
-    }
-    clock_t end2 = clock();
     std::cout << "Eigenvalues:\n";
     for (size_t i = 0; i < (size_t)m; ++i) {
         printf("l%zu =%10.3e\n", i + 1, lambdas[i]);
     }
-
-    auto r1r2 = Variation(matrix, lambdas);
     printf (
         "%s : Residual1 = %e Residual2 = %e Iterations = %d Iterations1 = %d Elapsed1 = %.2f Elapsed2 = %.2f\n",
         argv[0], std::get<0>(r1r2), std::get<1>(r1r2), (int)iters, (int)iters / n, 
