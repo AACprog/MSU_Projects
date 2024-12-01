@@ -1,5 +1,5 @@
 #include "header.hpp"
-#define ITERATION_COUNT 10000
+#define ITERATION_COUNT 1e6
 
 int main(int argc, char* argv[]) {
     const auto incorrectArgs = [&argv](){
@@ -49,14 +49,14 @@ int main(int argc, char* argv[]) {
         for (size_t j = 0; j < (size_t)m; ++j) {
             printf("%10.3e ", matrix[i][j]);
         }
-	printf("\n");
+	    printf("\n");
     }
     std::cout << "Reworked matrix:\n";
     for (size_t i = 0; i < (size_t)m; ++i) {
         for (size_t j = 0; j < (size_t)m; ++j) {
             printf("%10.3e ", matrixCopy[i][j]);
         }
-	printf("\n");
+	    printf("\n");
     }
     std::cout << "Eigenvalues:\n";
     for (size_t i = 0; i < (size_t)m; ++i) {
