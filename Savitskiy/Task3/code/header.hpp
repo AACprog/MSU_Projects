@@ -36,8 +36,7 @@ namespace Matrix {
 namespace Solve {
     std::tuple<size_t, size_t> FindElemenForZeroing(const std::vector<std::vector<double>>&, const std::vector<double>&) noexcept;
     void JacobianRotation(std::vector<std::vector<double>>&, const double&, const size_t&, size_t&) noexcept; 
-    void MakeRotationMatrix(std::vector<std::vector<double>>&, const size_t&, const size_t&, const double&) noexcept;
-    void Rotate(std::vector<std::vector<double>>&, const std::vector<std::vector<double>>&, const size_t&, const size_t&) noexcept;
+    void Rotate(std::vector<std::vector<double>>&, const double&, const size_t&, const size_t&) noexcept;
 }
 
 
