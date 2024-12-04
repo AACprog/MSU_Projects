@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 
 #include <iostream>
@@ -11,6 +11,7 @@
 #include <thread>
 #include <algorithm>
 #include <ctime>
+#include <functional>
 
 
 typedef struct {
@@ -59,6 +60,7 @@ namespace Matrix {
 namespace SolveFuncs {
     namespace Solver {
         bool Solve(std::vector<LinearEquation>&, const double&, const int&) noexcept;
+        void threadFunction(std::vector<LinearEquation>&, size_t, size_t, size_t) noexcept;
     }
     namespace Solution
     {
@@ -70,7 +72,6 @@ namespace SolveFuncs {
 namespace Variation {
     std::tuple<double, double> GetVariation(
         const std::vector<std::vector<double>>&, 
-        const std::vector<double>&,
-        const int&
+        const std::vector<double>&
     ) noexcept;
 }
