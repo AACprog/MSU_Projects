@@ -3,7 +3,8 @@
 
 
 int main(int argc, char* argv[]) {
-    clock_t start = clock(), end;
+    time_t start, end;
+    time(&start);
     int n, p, r, s;
     bool stop = false;
 
@@ -106,12 +107,13 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    clock_t startN = clock();
-    const auto r1r2 = Variation::GetVariation(matrix, solution, p);
-    clock_t endN = clock();
-    end = clock();
-    double secs = (double)(end - start) / CLOCKS_PER_SEC;
-    double secsN = (double)(endN - startN) / CLOCKS_PER_SEC;
+    time_t startN, endN;
+    time(&startN);
+    const auto r1r2 = Variation::GetVariation(matrix, solution);
+    time(&endN);
+    time(&end);
+    double secs = (double)(end - start);
+    double secsN = (double)(endN - startN);
     printf(
         "%s : Task = %d Res1 = %e Res2 = %e T1 = %.2f T2 = %.2f S = %d N = %d P = %d\n",
         argv[0], TASK, std::get<0>(r1r2), std::get<1>(r1r2), secs, secsN, s, n, p
