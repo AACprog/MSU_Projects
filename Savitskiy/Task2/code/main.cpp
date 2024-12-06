@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
         p = std::stoi(argv[2]);
         r = std::stoi(argv[3]);
         s = std::stoi(argv[4]);
-        if (s == 0 && argc == 5) stop = true;
+        if ((s == 0 && argc == 5) || n < 1 || n < r || p < 1 || s < 0 || s > 4) stop = true;
     } catch (std::exception const& e) {
         stop = true;
     }
