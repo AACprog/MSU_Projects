@@ -12,6 +12,7 @@ bool SolveFuncs::Solver::Solve(
     };
 
     size_t blockSize = (system.size() % numberOfThreads == 0) ? system.size() / numberOfThreads : (system.size() / numberOfThreads) + 1;
+    if (blockSize == 0) blockSize = 1;
     size_t index = 0;
     while (index < system.size()) {
         auto check_pos = system[index].Normalize_isZeros_position(matrixNorm);
